@@ -1,0 +1,27 @@
+---
+import { appConfig } from '../../config';
+import { createTranslator, supportedLocales, type Locale } from '../../i18n';
+
+const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
+const t = createTranslator(locale);
+const [, , ...rest] = Astro.url.pathname.split('/');
+const restPath = rest.join('/');
+---
+
+<div class="flex items-center gap-2 text-sm">
+	<span class="text-[color:var(--color-muted)]">{t('locale.label')}:</span>
+	<div class="flex gap-1">
+		{supportedLocales.map((code) => (
+			<a
+				class={`px-3 py-2 rounded-full border text-xs ${
+					code === locale
+						? 'bg-[color:var(--color-primary)] text-[color:var(--color-background)] border-[color:var(--color-primary-strong)]'
+						: 'border-[color:var(--color-border)] text-[color:var(--color-text)] hover:border-[color:var(--color-primary)]'
+				}`}
+				href={`/${code}/${restPath ? `${restPath}` : ''}`}
+			>
+				{code.toUpperCase()}
+			</a>
+		))}
+	</div>
+</div>

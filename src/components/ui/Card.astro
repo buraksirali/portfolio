@@ -1,0 +1,33 @@
+---
+export interface Props {
+	title: string;
+	description?: string;
+	eyebrow?: string;
+	href?: string;
+	tags?: string[];
+	linkLabel?: string;
+}
+
+const { title, description, eyebrow, href, tags = [], linkLabel } = Astro.props;
+---
+
+<article class="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-6 flex flex-col gap-4 shadow-card">
+	{eyebrow && <p class="text-xs uppercase tracking-[0.2em] text-[color:var(--color-muted)]">{eyebrow}</p>}
+	<h3 class="text-xl font-semibold text-[color:var(--color-text)]">{title}</h3>
+	{description && <p class="text-[color:var(--color-muted)]">{description}</p>}
+	{tags.length > 0 && (
+		<div class="flex flex-wrap gap-2">
+			{tags.map((tag) => (
+				<span class="text-xs px-3 py-1 rounded-full bg-[color:var(--color-primary)]/10 text-[color:var(--color-primary-strong)] border border-[color:var(--color-border)]">
+					{tag}
+				</span>
+			))}
+		</div>
+	)}
+	{href && (
+		<a class="inline-flex items-center gap-2 font-semibold text-[color:var(--color-primary)]" href={href}>
+			{linkLabel ?? 'View'}
+			<span aria-hidden="true">→</span>
+		</a>
+	)}
+</article>

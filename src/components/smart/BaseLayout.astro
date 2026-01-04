@@ -1,0 +1,71 @@
+---
+import '../../styles/global.css';
+import { appConfig } from '../../config';
+import { createTranslator, type Locale } from '../../i18n';
+import Footer from '../ui/Footer.astro';
+import Navbar from '../ui/Navbar.astro';
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+export interface Props {
+	title?: string;
+	description?: string;
+	urlPathname?: string;
+}
+
+const { title, description, urlPathname } = Astro.props;
+const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
+const t = createTranslator(locale);
+const theme = (Astro.locals.theme === 'dark' ? 'dark' : 'light') as 'light' | 'dark';
+
+const navItems = [
+	{ label: t('nav.home'), href: `/${locale}/`, active: Astro.url.pathname === `/${locale}/` },
+	{ label: t('nav.projects'), href: `/${locale}/projects/`, active: Astro.url.pathname.startsWith(`/${locale}/projects`) },
+	{ label: t('nav.pages'), href: `/${locale}/pages/`, active: Astro.url.pathname.startsWith(`/${locale}/pages`) },
+	{ label: t('nav.about'), href: `/${locale}/about/`, active: Astro.url.pathname.startsWith(`/${locale}/about`) },
+	{ label: t('nav.contact'), href: `/${locale}/contact/`, active: Astro.url.pathname.startsWith(`/${locale}/contact`) }
+];
+
+const themeVars = (mode: 'light' | 'dark') => `
+	--color-background: ${appConfig.theme[mode].background};
+	--color-surface: ${appConfig.theme[mode].surface};
+	--color-text: ${appConfig.theme[mode].text};
+	--color-muted: ${appConfig.theme[mode].muted};
+	--color-primary: ${appConfig.theme[mode].primary};
+	--color-primary-strong: ${appConfig.theme[mode].primaryStrong};
+	--color-accent: ${appConfig.theme[mode].accent};
+	--color-border: ${appConfig.theme[mode].border};
+	--font-family: ${appConfig.theme.fontFamily};
+	--radius: ${appConfig.theme.radius};
+`;
+---
+
+<html lang={locale} data-theme={theme}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title ?? appConfig.seo.defaultTitle}</title>
+		<meta name="description" content={description ?? appConfig.seo.defaultDescription} />
+		<link rel="canonical" href={`${appConfig.seo.canonicalHost}${urlPathname ?? Astro.url.pathname}`} />
+		<meta property="og:title" content={title ?? appConfig.seo.defaultTitle} />
+		<meta property="og:description" content={description ?? appConfig.seo.defaultDescription} />
+		<meta property="og:url" content={`${appConfig.seo.canonicalHost}${urlPathname ?? Astro.url.pathname}`} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content={appConfig.seo.twitterHandle} />
+		<style>
+			{`:root[data-theme='light'] { ${themeVars('light')} }
+			:root[data-theme='dark'] { ${themeVars('dark')} }`}
+		</style>
+	</head>
+	<body>
+		<Navbar
+			brand={appConfig.branding.siteName}
+			items={navItems}
+			actions={{ themeSwitcher: ThemeToggle, localeSwitcher: LocaleSwitcher }}
+		/>
+		<main>
+			<slot />
+		</main>
+		<Footer text={t('footer.tagline')} />
+	</body>
+</html>

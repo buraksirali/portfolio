@@ -1,0 +1,29 @@
+---
+import { createTranslator, type Locale } from '../../i18n';
+import { getProjects } from '../../server/db';
+import Card from '../ui/Card.astro';
+import Section from '../ui/Section.astro';
+
+const locale = (Astro.locals.locale ?? 'en') as Locale;
+const t = createTranslator(locale);
+const projects = getProjects(locale);
+---
+
+<Section title={t('projects.title')}>
+	{projects.length === 0 ? (
+		<p class="text-[color:var(--color-muted)]">{t('projects.empty')}</p>
+	) : (
+		<div class="grid md:grid-cols-2">
+			{projects.map((project) => (
+				<Card
+					title={project.translation?.name ?? project.slug}
+					description={project.translation?.description}
+					eyebrow={project.status === 'published' ? t('admin.published') : t('admin.draft')}
+					tags={project.tech?.split(',').map((t) => t.trim()) ?? []}
+					href={`/${locale}/projects/${project.slug}/`}
+					linkLabel={t('projects.view')}
+				/>
+			))}
+		</div>
+	)}
+</Section>

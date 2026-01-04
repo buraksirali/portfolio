@@ -1,0 +1,11 @@
+---
+export interface Props {
+	text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<footer class="container py-8 mt-12 border-t border-[color:var(--color-border)] text-sm text-[color:var(--color-muted)]">
+	{text}
+</footer>

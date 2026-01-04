@@ -1,0 +1,16 @@
+---
+export interface Props {
+	title?: string;
+	description?: string;
+	eyebrow?: string;
+}
+
+const { title, description, eyebrow } = Astro.props;
+---
+
+<section class="container space-y-4">
+	{eyebrow && <p class="text-sm uppercase tracking-[0.15em] text-[color:var(--color-muted)]">{eyebrow}</p>}
+	{title && <h2 class="text-3xl md:text-4xl font-semibold text-[color:var(--color-text)]">{title}</h2>}
+	{description && <p class="max-w-3xl text-lg text-[color:var(--color-muted)]">{description}</p>}
+	<slot />
+</section>

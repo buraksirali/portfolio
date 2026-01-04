@@ -1,0 +1,79 @@
+{
+	"nav": {
+		"home": "Home",
+		"projects": "Projects",
+		"about": "About",
+		"contact": "Contact",
+		"pages": "Pages",
+		"admin": "Admin"
+	},
+	"hero": {
+		"eyebrow": "Portfolio",
+		"title": "Design boldly. Ship fast.",
+		"subtitle": "A modular, white-label portfolio platform powered by Astro and Express.",
+		"ctaPrimary": "View projects",
+		"ctaSecondary": "Download brochure"
+	},
+	"projects": {
+		"title": "Selected Work",
+		"empty": "No projects published yet.",
+		"view": "View project",
+		"tech": "Stack",
+		"link": "Live link",
+		"back": "Back to projects"
+	},
+	"pages": {
+		"title": "Pages",
+		"sections": "Sections"
+	},
+	"about": {
+		"title": "About the studio",
+		"body": "We craft expressive digital experiences with a bias for performance and clarity."
+	},
+	"contact": {
+		"title": "Contact",
+		"body": "Tell us about your idea and we will respond within one business day.",
+		"email": "Email",
+		"phone": "Phone"
+	},
+	"footer": {
+		"tagline": "Built for creators who value speed, ownership, and warmth."
+	},
+	"theme": {
+		"light": "Light",
+		"dark": "Dark"
+	},
+	"locale": {
+		"label": "Language"
+	},
+	"admin": {
+		"title": "Admin",
+		"projects": "Projects",
+		"pages": "Pages",
+		"translations": "Translations",
+		"logout": "Log out",
+		"login": "Log in",
+		"save": "Save",
+		"name": "Name",
+		"description": "Description",
+		"slug": "Slug",
+		"status": "Status",
+		"published": "Published",
+		"draft": "Draft",
+		"theme": "Theme settings",
+		"locale": "Locale",
+		"heroTitle": "Hero title",
+		"heroSubtitle": "Hero subtitle",
+		"translationInfo": "Translations are file-based under src/i18n/locales. Edit JSON files or wire a UI here."
+	},
+	"seo": {
+		"homeTitle": "Portfolio home",
+		"projectsTitle": "Projects",
+		"projectTitle": "Project",
+		"genericTitle": "Page"
+	},
+	"errors": {
+		"notFound": "This page could not be found.",
+		"unauthorized": "You need to sign in to continue."
+	}
+}

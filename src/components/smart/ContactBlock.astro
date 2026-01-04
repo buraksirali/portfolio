@@ -1,0 +1,25 @@
+---
+import { appConfig } from '../../config';
+import { createTranslator, type Locale } from '../../i18n';
+import Section from '../ui/Section.astro';
+
+const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
+const t = createTranslator(locale);
+---
+
+<Section title={t('contact.title')} description={t('contact.body')}>
+	<div class="grid md:grid-cols-2 gap-4">
+		<div class="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-5 shadow-card space-y-2">
+			<p class="text-sm text-[color:var(--color-muted)]">{t('contact.email')}</p>
+			<a class="font-semibold text-[color:var(--color-text)]" href={`mailto:${appConfig.branding.contactEmail}`}>
+				{appConfig.branding.contactEmail}
+			</a>
+		</div>
+		{appConfig.branding.contactPhone && (
+			<div class="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-5 shadow-card space-y-2">
+				<p class="text-sm text-[color:var(--color-muted)]">{t('contact.phone')}</p>
+				<p class="font-semibold text-[color:var(--color-text)]">{appConfig.branding.contactPhone}</p>
+			</div>
+		)}
+	</div>
+</Section>

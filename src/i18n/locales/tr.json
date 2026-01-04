@@ -1,0 +1,79 @@
+{
+	"nav": {
+		"home": "Ana sayfa",
+		"projects": "Projeler",
+		"about": "Hakkında",
+		"contact": "İletişim",
+		"pages": "Sayfalar",
+		"admin": "Yönetim"
+	},
+	"hero": {
+		"eyebrow": "Portfolyo",
+		"title": "Cesur tasarla. Hızlı gönder.",
+		"subtitle": "Astro ve Express ile güçlenen modüler, markasız bir portfolyo platformu.",
+		"ctaPrimary": "Projeleri gör",
+		"ctaSecondary": "Broşürü indir"
+	},
+	"projects": {
+		"title": "Seçili işler",
+		"empty": "Henüz yayımlanmış proje yok.",
+		"view": "Projeyi gör",
+		"tech": "Teknoloji",
+		"link": "Canlı bağlantı",
+		"back": "Projeler listesine dön"
+	},
+	"pages": {
+		"title": "Sayfalar",
+		"sections": "Bölümler"
+	},
+	"about": {
+		"title": "Stüdyo hakkında",
+		"body": "Performans ve netlik odaklı etkileyici dijital deneyimler üretiyoruz."
+	},
+	"contact": {
+		"title": "İletişim",
+		"body": "Fikrinizden bahsedin, bir iş günü içinde yanıtlayalım.",
+		"email": "E-posta",
+		"phone": "Telefon"
+	},
+	"footer": {
+		"tagline": "Hız, sahiplik ve sıcaklığı önemseyen üreticiler için."
+	},
+	"theme": {
+		"light": "Açık",
+		"dark": "Koyu"
+	},
+	"locale": {
+		"label": "Dil"
+	},
+	"admin": {
+		"title": "Yönetim",
+		"projects": "Projeler",
+		"pages": "Sayfalar",
+		"translations": "Çeviriler",
+		"logout": "Çıkış",
+		"login": "Giriş",
+		"save": "Kaydet",
+		"name": "Ad",
+		"description": "Açıklama",
+		"slug": "Kısa ad",
+		"status": "Durum",
+		"published": "Yayında",
+		"draft": "Taslak",
+		"theme": "Tema ayarları",
+		"locale": "Dil",
+		"heroTitle": "Hero başlığı",
+		"heroSubtitle": "Hero alt başlığı",
+		"translationInfo": "Çeviriler src/i18n/locales klasöründeki JSON dosyalarındadır. Buradan düzenleyin veya bir arayüz ekleyin."
+	},
+	"seo": {
+		"homeTitle": "Portfolyo ana sayfa",
+		"projectsTitle": "Projeler",
+		"projectTitle": "Proje",
+		"genericTitle": "Sayfa"
+	},
+	"errors": {
+		"notFound": "Bu sayfa bulunamadı.",
+		"unauthorized": "Devam etmek için giriş yapın."
+	}
+}

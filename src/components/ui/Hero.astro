@@ -1,0 +1,33 @@
+---
+import Button from './Button.astro';
+
+export interface Action {
+	label: string;
+	href: string;
+	variant?: 'primary' | 'ghost';
+}
+
+export interface Props {
+	title: string;
+	subtitle?: string;
+	eyebrow?: string;
+	actions?: Action[];
+}
+
+const { title, subtitle, eyebrow, actions = [] } = Astro.props;
+---
+
+<section class="container py-12 md:py-16 space-y-6">
+	<div class="space-y-3 max-w-3xl">
+		{eyebrow && <p class="text-sm uppercase tracking-[0.15em] text-[color:var(--color-muted)]">{eyebrow}</p>}
+		<h1 class="text-4xl md:text-5xl font-semibold leading-tight text-[color:var(--color-text)]">{title}</h1>
+		{subtitle && <p class="text-lg text-[color:var(--color-muted)]">{subtitle}</p>}
+	</div>
+	{actions.length > 0 && (
+		<div class="flex flex-wrap gap-3">
+			{actions.map((action) => (
+				<Button label={action.label} href={action.href} variant={action.variant ?? 'primary'} />
+			))}
+		</div>
+	)}
+</section>

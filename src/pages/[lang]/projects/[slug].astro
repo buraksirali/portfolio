@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../../../components/smart/BaseLayout.astro';
+import ProjectDetail from '../../../../components/smart/ProjectDetail.astro';
+import { appConfig } from '../../../../config';
+import { createTranslator, type Locale } from '../../../../i18n';
+
+const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
+const { slug } = Astro.params;
+Astro.locals.locale = locale;
+const t = createTranslator(locale);
+---
+
+<BaseLayout
+	title={`${t('seo.projectTitle')}: ${slug}`}
+	description={t('projects.title')}
+	urlPathname={`/${locale}/projects/${slug}/`}
+>
+	<ProjectDetail slug={slug} />
+</BaseLayout>

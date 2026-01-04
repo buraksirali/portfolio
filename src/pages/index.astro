@@ -1,15 +1,8 @@
 ---
-const title = "Burak – Portfolio";
+import { appConfig } from '../config';
+import { defaultLocale } from '../i18n';
+
+const targetLocale = defaultLocale ?? appConfig.locales.defaultLocale;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>{title}</title>
-		<meta name="viewport" content="width=device-width" />
-	</head>
-	<body>
-		<h1>{title}</h1>
-		<p>Fast. SSR. No framework lock-in.</p>
-	</body>
-</html>
+<meta http-equiv="refresh" content={`0; url=/${targetLocale}/`} />

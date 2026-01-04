@@ -1,0 +1,79 @@
+{
+	"nav": {
+		"home": "Startseite",
+		"projects": "Projekte",
+		"about": "Über uns",
+		"contact": "Kontakt",
+		"pages": "Seiten",
+		"admin": "Admin"
+	},
+	"hero": {
+		"eyebrow": "Portfolio",
+		"title": "Gestalte mutig. Liefere schnell.",
+		"subtitle": "Eine modulare, white-label Portfolio-Plattform mit Astro und Express.",
+		"ctaPrimary": "Projekte ansehen",
+		"ctaSecondary": "Broschüre laden"
+	},
+	"projects": {
+		"title": "Ausgewählte Arbeiten",
+		"empty": "Noch keine veröffentlichten Projekte.",
+		"view": "Projekt ansehen",
+		"tech": "Technologie",
+		"link": "Live-Link",
+		"back": "Zurück zu den Projekten"
+	},
+	"pages": {
+		"title": "Seiten",
+		"sections": "Abschnitte"
+	},
+	"about": {
+		"title": "Über das Studio",
+		"body": "Wir bauen ausdrucksstarke digitale Erlebnisse mit Fokus auf Performance und Klarheit."
+	},
+	"contact": {
+		"title": "Kontakt",
+		"body": "Erzähl uns von deiner Idee und wir antworten innerhalb eines Werktags.",
+		"email": "E-Mail",
+		"phone": "Telefon"
+	},
+	"footer": {
+		"tagline": "Für Macher:innen, die Geschwindigkeit, Eigenständigkeit und Wärme schätzen."
+	},
+	"theme": {
+		"light": "Hell",
+		"dark": "Dunkel"
+	},
+	"locale": {
+		"label": "Sprache"
+	},
+	"admin": {
+		"title": "Admin",
+		"projects": "Projekte",
+		"pages": "Seiten",
+		"translations": "Übersetzungen",
+		"logout": "Abmelden",
+		"login": "Anmelden",
+		"save": "Speichern",
+		"name": "Name",
+		"description": "Beschreibung",
+		"slug": "Slug",
+		"status": "Status",
+		"published": "Veröffentlicht",
+		"draft": "Entwurf",
+		"theme": "Theme-Einstellungen",
+		"locale": "Sprache",
+		"heroTitle": "Hero-Titel",
+		"heroSubtitle": "Hero-Untertitel",
+		"translationInfo": "Übersetzungen liegen als JSON unter src/i18n/locales. Dort bearbeiten oder ein UI anbinden."
+	},
+	"seo": {
+		"homeTitle": "Portfolio Start",
+		"projectsTitle": "Projekte",
+		"projectTitle": "Projekt",
+		"genericTitle": "Seite"
+	},
+	"errors": {
+		"notFound": "Diese Seite wurde nicht gefunden.",
+		"unauthorized": "Bitte anmelden, um fortzufahren."
+	}
+}

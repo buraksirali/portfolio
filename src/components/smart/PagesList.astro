@@ -1,0 +1,27 @@
+---
+import { createTranslator, type Locale } from '../../i18n';
+import { getPages } from '../../server/db';
+import Card from '../ui/Card.astro';
+import Section from '../ui/Section.astro';
+
+const locale = (Astro.locals.locale ?? 'en') as Locale;
+const t = createTranslator(locale);
+const pages = getPages(locale).filter((p) => p.published);
+---
+
+<Section title={t('pages.title')}>
+	{pages.length === 0 ? (
+		<p class="text-[color:var(--color-muted)]">{t('projects.empty')}</p>
+	) : (
+		<div class="grid md:grid-cols-2">
+			{pages.map((page) => (
+				<Card
+					title={page.slug}
+					description={t('pages.sections')}
+					href={`/${locale}/pages/${page.slug}/`}
+					linkLabel={t('projects.view')}
+				/>
+			))}
+		</div>
+	)}
+</Section>

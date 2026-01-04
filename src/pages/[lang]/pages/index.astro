@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../../../components/smart/BaseLayout.astro';
+import PagesList from '../../../../components/smart/PagesList.astro';
+import { appConfig } from '../../../../config';
+import { createTranslator, type Locale } from '../../../../i18n';
+
+const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
+Astro.locals.locale = locale;
+const t = createTranslator(locale);
+---
+
+<BaseLayout title={t('pages.title')} description={t('pages.sections')} urlPathname={`/${locale}/pages/`}>
+	<PagesList />
+</BaseLayout>

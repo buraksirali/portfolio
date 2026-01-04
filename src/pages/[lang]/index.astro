@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../components/smart/BaseLayout.astro';
+import AboutBlock from '../../components/smart/AboutBlock.astro';
+import ContactBlock from '../../components/smart/ContactBlock.astro';
+import HeroSection from '../../components/smart/HeroSection.astro';
+import ProjectsGrid from '../../components/smart/ProjectsGrid.astro';
+import { appConfig } from '../../config';
+import { createTranslator, type Locale } from '../../i18n';
+
+const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
+Astro.locals.locale = locale;
+const t = createTranslator(locale);
+---
+
+<BaseLayout
+	title={t('seo.homeTitle')}
+	description={t('hero.subtitle')}
+	urlPathname={`/${locale}/`}
+>
+	<HeroSection />
+	<ProjectsGrid />
+	<AboutBlock />
+	<ContactBlock />
+</BaseLayout>

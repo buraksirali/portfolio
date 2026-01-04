@@ -1,0 +1,36 @@
+---
+export interface NavItem {
+	href: string;
+	label: string;
+	active?: boolean;
+}
+
+export interface Props {
+	brand: string;
+	items: NavItem[];
+	actions?: {
+		themeSwitcher?: AstroComponentFactory;
+		localeSwitcher?: AstroComponentFactory;
+	};
+}
+
+const { brand, items, actions } = Astro.props;
+---
+
+<header class="container py-4 flex items-center justify-between gap-4">
+	<a class="font-semibold text-[color:var(--color-text)] text-lg tracking-tight" href="/">{brand}</a>
+	<nav class="flex items-center gap-4 text-sm font-medium">
+		{items.map((item) => (
+			<a
+				href={item.href}
+				class={`px-3 py-2 rounded-full ${
+					item.active ? 'bg-[color:var(--color-primary)] text-[color:var(--color-background)]' : 'text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]'
+				}`}
+			>
+				{item.label}
+			</a>
+		))}
+		{actions?.localeSwitcher && <actions.localeSwitcher />}
+		{actions?.themeSwitcher && <actions.themeSwitcher />}
+	</nav>
+</header>
