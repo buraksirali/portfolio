@@ -32,7 +32,7 @@ Astro + Express, SSR-first portfolio platform with theming, i18n, and an OAuth-p
 ## Admin Panel
 - Express + server-rendered forms under `/admin` (projects, pages, translations info).
 - Protected by OAuth 2.1 + OIDC with PKCE (`/auth/login`, `/auth/callback`, `/auth/logout`), session-based, user auto-created on first login.
-- CSRF protection on all POST routes via `csurf`.
+- CSRF protection on all POST routes via `csrf-csrf`.
 
 ## Deployment
 1) Set env vars (`SESSION_SECRET`, `OAUTH_ISSUER`, `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `OAUTH_REDIRECT_URI`, `SITE_URL`, `DATABASE_PATH`, `PORT`).
