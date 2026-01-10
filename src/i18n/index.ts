@@ -6,7 +6,11 @@ const dictionaries = { en, tr, de } as const;
 
 export type Locale = keyof typeof dictionaries;
 
-type TranslationTree = string | Record<string, TranslationTree>;
+type TranslationTree = string | TranslationBranch;
+
+interface TranslationBranch {
+	[key: string]: TranslationTree;
+}
 
 type NestedKeys<T> = T extends object
 	? {

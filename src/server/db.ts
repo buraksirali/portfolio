@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { appConfig } from '../config';
@@ -171,7 +171,7 @@ export const savePage = (
 	}
 };
 
-export type User = {
+type User = {
 	id: string;
 	email: string;
 	name?: string;
