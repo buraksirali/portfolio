@@ -38,6 +38,11 @@ const themeVars = (mode: 'light' | 'dark') => `
 	--font-family: ${appConfig.theme.fontFamily};
 	--radius: ${appConfig.theme.radius};
 `;
+
+const themeCss = `
+:root[data-theme='light'] { ${themeVars('light')} }
+:root[data-theme='dark'] { ${themeVars('dark')} }
+`;
 ---
 
 <html lang={locale} data-theme={theme}>
@@ -52,10 +57,7 @@ const themeVars = (mode: 'light' | 'dark') => `
 		<meta property="og:url" content={`${appConfig.seo.canonicalHost}${urlPathname ?? Astro.url.pathname}`} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:site" content={appConfig.seo.twitterHandle} />
-		<style>
-			{`:root[data-theme='light'] { ${themeVars('light')} }
-			:root[data-theme='dark'] { ${themeVars('dark')} }`}
-		</style>
+		<style set:html={themeCss}></style>
 	</head>
 	<body>
 		<Navbar

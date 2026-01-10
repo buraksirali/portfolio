@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '../../../../components/smart/BaseLayout.astro';
-import AboutBlock from '../../../../components/smart/AboutBlock.astro';
-import GenericPageSections from '../../../../components/smart/GenericPageSections.astro';
-import { appConfig } from '../../../../config';
-import { createTranslator, type Locale } from '../../../../i18n';
+import BaseLayout from '../../../components/smart/BaseLayout.astro';
+import AboutBlock from '../../../components/smart/AboutBlock.astro';
+import GenericPageSections from '../../../components/smart/GenericPageSections.astro';
+import { appConfig } from '../../../config';
+import { createTranslator, type Locale } from '../../../i18n';
 
 const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
 Astro.locals.locale = locale;
