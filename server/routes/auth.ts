@@ -1,7 +1,7 @@
 import type express from 'express';
 import * as oauth from 'oauth4webapi';
 import { appConfig } from '../../src/config';
-import { getOrCreateUser } from '../../src/server/db';
+import { getUserByEmail } from '../../src/server/db';
 import type { CallbackQuery, EmptyParams, EmptyLocals } from '../types';
 import type { RouteDependencies } from './types';
 import type { ParsedQs } from 'qs';
@@ -18,7 +18,9 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 	const getClient = (): oauth.Client => ({
 		client_id: appConfig.auth.clientId,
 		client_secret: appConfig.auth.clientSecret,
-		token_endpoint_auth_method: appConfig.auth.clientSecret ? 'client_secret_basic' : 'none'
+		token_endpoint_auth_method: appConfig.auth.clientSecret
+			? 'client_secret_basic'
+			: 'none'
 	});
 
 	const authLoginHandler: express.RequestHandler<EmptyParams, oauth.OAuth2Error | string, Record<string, never>, ParsedQs, EmptyLocals> = async (
@@ -71,7 +73,7 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 		const callbackUrl = new URL(req.originalUrl, appConfig.auth.redirectUri);
 		const params = oauth.validateAuthResponse(as, client, callbackUrl);
 		if (oauth.isOAuth2Error(params)) {
-			res.status(400).send(params.error);
+			res.status(400).send(params);
 			return;
 		}
 
@@ -90,7 +92,7 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 		);
 		const result = await oauth.processAuthorizationCodeOpenIDResponse(as, client, tokenResponse);
 		if (oauth.isOAuth2Error(result)) {
-			res.status(400).json(result.error);
+			res.status(400).json(result);
 			return;
 		}
 
@@ -100,10 +102,16 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 			res.status(400).send('Email missing from provider response');
 			return;
 		}
-		const name = (claims.name as string) ?? (claims.preferred_username as string) ?? null;
-		const userParams = isDefined(name) ? { email, name } : { email };
-		const user = getOrCreateUser(userParams);
-		req.session.user = { id: user.id, email: user.email, name: user.name };
+		const existingUser = getUserByEmail(email);
+		if (!existingUser) {
+			res.status(403).send('User is not authorized');
+			return;
+		}
+		req.session.user = {
+			id: existingUser.id,
+			email: existingUser.email,
+			name: existingUser.name
+		};
 		res.redirect('/admin/projects');
 	};
 
@@ -114,7 +122,7 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 		res
 	): void => {
 		req.session.destroy((destroyError: Error | null) => {
-			if (destroyError) {
+			if (isDefined(destroyError)) {
 				res.status(500).send('Failed to log out');
 				return;
 			}

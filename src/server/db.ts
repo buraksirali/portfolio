@@ -177,16 +177,9 @@ type User = {
 	name?: string;
 };
 
-export const getOrCreateUser = (params: { email: string; name?: string }): User => {
-	const existing = db.prepare(`SELECT id, email, name FROM users WHERE email = ?`).get(params.email) as
-		| User
-		| undefined;
-	if (existing) {
-		return existing;
-	}
-	const user: User = { id: randomUUID(), email: params.email, name: params.name };
-	db.prepare(`INSERT INTO users (id, email, name) VALUES (@id, @email, @name)`).run(user);
-	return user;
+export const getUserByEmail = (email: string): User | undefined => {
+	const existing = db.prepare(`SELECT id, email, name FROM users WHERE email = ?`).get(email) as User | undefined;
+	return existing;
 };
 
 const seedIfEmpty = (): void => {
