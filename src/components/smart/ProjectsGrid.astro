@@ -6,7 +6,7 @@ import Section from '../ui/Section.astro';
 
 const locale = (Astro.locals.locale ?? 'en') as Locale;
 const translator = createTranslator(locale);
-const projects = getProjects(locale);
+const projects = await getProjects(locale);
 ---
 
 <Section title={translator('projects.title')}>

@@ -10,7 +10,7 @@ export interface Props {
 const { slug } = Astro.props;
 const locale = (Astro.locals.locale ?? 'en') as Locale;
 const translator = createTranslator(locale);
-const pages = getPages(locale);
+const pages = await getPages(locale);
 const page = pages.find((p) => p.slug === slug && p.published);
 ---
 

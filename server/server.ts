@@ -7,6 +7,7 @@ import { attachErrorHandlers } from './errors';
 // Builds the Express app, wires middleware/routes/errors, and starts listening.
 export const createServer = () => {
 	const app = express();
+	app.set('trust proxy', 1);
 	const middleware = registerMiddleware(app);
 
 	registerRoutes(app, middleware);

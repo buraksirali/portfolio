@@ -6,7 +6,7 @@ import Section from '../ui/Section.astro';
 
 const locale = (Astro.locals.locale ?? 'en') as Locale;
 const translator = createTranslator(locale);
-const pages = getPages(locale).filter((p) => p.published);
+const pages = (await getPages(locale)).filter((p) => p.published);
 ---
 
 <Section title={translator('pages.title')}>

@@ -9,7 +9,7 @@ const renderUrl = (loc: string) => `
   </url>
 `;
 
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
 	const base = appConfig.seo.canonicalHost.replace(/\/$/, '');
 	const urls: string[] = [];
 
@@ -17,9 +17,9 @@ export const GET: APIRoute = () => {
 		urls.push(`${base}/${locale}/`);
 		urls.push(`${base}/${locale}/projects/`);
 		urls.push(`${base}/${locale}/pages/`);
-		const projects = getProjects(locale);
+		const projects = await getProjects(locale);
 		projects.forEach((project) => urls.push(`${base}/${locale}/projects/${project.slug}/`));
-		const pages = getPages(locale);
+		const pages = await getPages(locale);
 		pages.forEach((page) => urls.push(`${base}/${locale}/pages/${page.slug}/`));
 		urls.push(`${base}/${locale}/about/`);
 		urls.push(`${base}/${locale}/contact/`);

@@ -36,7 +36,7 @@ const appConfigSchema = z.object({
 		scopes: z.array(z.string())
 	}),
 	database: z.object({
-		path: z.string()
+		url: z.string().url()
 	})
 });
 
@@ -70,6 +70,6 @@ export const appConfig: AppConfig = appConfigSchema.parse({
 		scopes: ['openid', 'profile', 'email']
 	},
 	database: {
-		path: env.DATABASE_PATH
+		url: env.DATABASE_URL
 	}
 });

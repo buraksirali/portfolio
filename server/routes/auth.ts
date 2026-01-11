@@ -102,7 +102,7 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 			res.status(400).send('Email missing from provider response');
 			return;
 		}
-		const existingUser = getUserByEmail(email);
+		const existingUser = await getUserByEmail(email);
 		if (!existingUser) {
 			res.status(403).send('User is not authorized');
 			return;
@@ -110,7 +110,7 @@ export const registerAuthRoutes = (app: express.Express, deps: RouteDependencies
 		req.session.user = {
 			id: existingUser.id,
 			email: existingUser.email,
-			name: existingUser.name
+			name: existingUser.name ?? ''
 		};
 		res.redirect('/admin/projects');
 	};

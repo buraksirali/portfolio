@@ -72,12 +72,12 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 
 	app.get('/admin', deps.requireAuth, adminRootHandler);
 
-	const adminProjectsHandler: express.RequestHandler<EmptyParams, string, Record<string, never>, LocaleQuery, EmptyLocals> = (
+	const adminProjectsHandler: express.RequestHandler<EmptyParams, string, Record<string, never>, LocaleQuery, EmptyLocals> = async (
 		req,
 		res
-	): void => {
+	): Promise<void> => {
 		const { translator, locale } = withTranslator(req);
-		const projects = getProjects(locale);
+		const projects = await getProjects(locale);
 		const csrfToken = deps.generateCsrfToken(req, res);
 		const form = `
     <h1>${translator('admin.projects')}</h1>
@@ -125,34 +125,32 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 
 	app.get('/admin/projects', deps.requireAuth, adminProjectsHandler);
 
-	const adminProjectsPostHandler: express.RequestHandler<EmptyParams, string, ProjectFormBody, LocaleQuery, EmptyLocals> = (
+	const adminProjectsPostHandler: express.RequestHandler<EmptyParams, string, ProjectFormBody, LocaleQuery, EmptyLocals> = async (
 		req,
 		res
-	): void => {
-	const translations = appConfig.locales.supported.map((locale) => {
-		const nameKey = `name_${locale}` as keyof ProjectFormBody;
-		const descriptionKey = `description_${locale}` as keyof ProjectFormBody;
-		const heroKey = `hero_${locale}` as keyof ProjectFormBody;
-		return {
-			project_id: '',
-			locale: locale as Locale,
-			name: req.body[nameKey] ?? '',
-			description: req.body[descriptionKey] ?? '',
-			hero_title: req.body[heroKey] ?? ''
-		};
-	});
-		const existingId = getProjectBySlug(req.body.slug, translations[0]?.locale ?? defaultLocale)?.id ?? null;
-		const projectId = existingId ?? randomUUID();
+	): Promise<void> => {
+		const translations = appConfig.locales.supported.map((locale) => {
+			const nameKey = `name_${locale}` as keyof ProjectFormBody;
+			const descriptionKey = `description_${locale}` as keyof ProjectFormBody;
+			const heroKey = `hero_${locale}` as keyof ProjectFormBody;
+			return {
+				project_id: '',
+				locale: locale as Locale,
+				name: req.body[nameKey] ?? '',
+				description: req.body[descriptionKey] ?? '',
+				hero_title: req.body[heroKey] ?? ''
+			};
+		});
+		const existing = await getProjectBySlug(req.body.slug, translations[0]?.locale ?? defaultLocale);
+		const projectId = existing?.id ?? randomUUID();
 		const payload: Project = {
 			id: projectId,
 			slug: req.body.slug,
-			status: req.body.status === 'published'
-				? 'published'
-				: 'draft',
-			tech: req.body.tech,
-			link: req.body.link
+			status: req.body.status === 'published' ? 'published' : 'draft',
+			tech: req.body.tech ?? null,
+			link: req.body.link ?? null
 		};
-		upsertProject(
+		await upsertProject(
 			payload,
 			translations.map((tr) => ({ ...tr, project_id: projectId }))
 		);
@@ -161,13 +159,13 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 
 	app.post('/admin/projects', deps.requireAuth, deps.doubleCsrfProtection, adminProjectsPostHandler);
 
-	const adminPagesHandler: express.RequestHandler<EmptyParams, string, Record<string, never>, LocaleQuery, EmptyLocals> = (
+	const adminPagesHandler: express.RequestHandler<EmptyParams, string, Record<string, never>, LocaleQuery, EmptyLocals> = async (
 		req,
 		res
-	): void => {
+	): Promise<void> => {
 		const { translator, locale } = withTranslator(req);
 		const csrfToken = deps.generateCsrfToken(req, res);
-		const pages = getPages(locale);
+		const pages = await getPages(locale);
 		const body = `
     <h1>${translator('admin.pages')}</h1>
     <section style="display:grid;gap:1rem;">
@@ -206,10 +204,10 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 
 	app.get('/admin/pages', deps.requireAuth, adminPagesHandler);
 
-	const adminPagesPostHandler: express.RequestHandler<EmptyParams, string, PageFormBody, LocaleQuery, EmptyLocals> = (
+	const adminPagesPostHandler: express.RequestHandler<EmptyParams, string, PageFormBody, LocaleQuery, EmptyLocals> = async (
 		req,
 		res
-	): void => {
+	): Promise<void> => {
 		const slug = req.body.slug;
 		const published = req.body.published === '1' ? 1 : 0;
 		const sections = appConfig.locales.supported.map((loc, index) => ({
@@ -218,7 +216,7 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 			body: req.body[`body_${loc}` as keyof PageFormBody] ?? '',
 			position: index
 		}));
-		savePage({ slug, template: 'generic', published }, sections);
+		await savePage({ slug, template: 'generic', published }, sections);
 		res.redirect('/admin/pages');
 	};
 

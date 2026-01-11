@@ -10,7 +10,7 @@ export interface Props {
 const { slug } = Astro.props;
 const locale = (Astro.locals.locale ?? 'en') as Locale;
 const translator = createTranslator(locale);
-const project = getProjectBySlug(slug, locale);
+const project = await getProjectBySlug(slug, locale);
 ---
 
 {project ? (
