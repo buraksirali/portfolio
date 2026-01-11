@@ -33,11 +33,11 @@ export interface Props {
 }
 
 const locale = (Astro.locals.locale ?? 'en') as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 const { titleKey = 'pages.title' } = Astro.props;
 ---
 
-<Section title={t(titleKey)}>
+<Section title={translator(titleKey)}>
   <p class="text-[color:var(--color-muted)]">Smart component placeholder for ${name}.</p>
 </Section>
 `;

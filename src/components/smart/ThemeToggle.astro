@@ -2,9 +2,13 @@
 import { createTranslator, type Locale } from '../../i18n';
 
 const locale = (Astro.locals.locale ?? 'en') as Locale;
-const t = createTranslator(locale);
-const currentTheme = Astro.locals.theme === 'dark' ? 'dark' : 'light';
-const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+const translator = createTranslator(locale);
+const currentTheme = Astro.locals.theme === 'dark'
+	? 'dark'
+	: 'light';
+const nextTheme = currentTheme === 'dark'
+	? 'light'
+	: 'dark';
 ---
 
 <form method="post" action="/api/theme" class="inline-flex">
@@ -13,6 +17,6 @@ const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
 		type="submit"
 		class="px-3 py-2 text-sm rounded-full border border-[color:var(--color-border)] text-[color:var(--color-text)] hover:border-[color:var(--color-primary)]"
 	>
-		{currentTheme === 'dark' ? t('theme.light') : t('theme.dark')}
+		{currentTheme === 'dark' ? translator('theme.light') : translator('theme.dark')}
 	</button>
 </form>

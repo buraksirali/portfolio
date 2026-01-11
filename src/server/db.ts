@@ -103,7 +103,7 @@ const getProjectBySlugStmt = db.prepare(
 export const getProjects = (locale: Locale): ProjectWithTranslation[] => {
 	const projects: Project[] = getProjectsStmt.all() as Project[];
 	const translations = getProjectTranslations.all(locale) as ProjectTranslation[];
-	const translationMap = new Map(translations.map((t) => [t.project_id, t]));
+	const translationMap = new Map(translations.map((translation) => [translation.project_id, translation]));
 	return projects.map((project) => ({
 		...project,
 		translation: translationMap.get(project.id)

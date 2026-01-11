@@ -6,9 +6,9 @@ import { createTranslator, type Locale } from '../../../i18n';
 
 const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
 Astro.locals.locale = locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 ---
 
-<BaseLayout title={t('pages.title')} description={t('pages.sections')} urlPathname={`/${locale}/pages/`}>
+<BaseLayout title={translator('pages.title')} description={translator('pages.sections')} urlPathname={`/${locale}/pages/`}>
 	<PagesList />
 </BaseLayout>

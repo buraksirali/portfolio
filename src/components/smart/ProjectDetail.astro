@@ -9,7 +9,7 @@ export interface Props {
 
 const { slug } = Astro.props;
 const locale = (Astro.locals.locale ?? 'en') as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 const project = getProjectBySlug(slug, locale);
 ---
 
@@ -19,20 +19,20 @@ const project = getProjectBySlug(slug, locale);
 			<p class="text-[color:var(--color-muted)]">{project.translation?.description}</p>
 			{project.tech && (
 				<p class="text-sm text-[color:var(--color-text)]">
-					<strong>{t('projects.tech')}:</strong> {project.tech}
+					<strong>{translator('projects.tech')}:</strong> {project.tech}
 				</p>
 			)}
 			{project.link && (
 				<a class="inline-flex items-center gap-2 font-semibold text-[color:var(--color-primary)]" href={project.link}>
-					{t('projects.link')}
+					{translator('projects.link')}
 					<span aria-hidden="true">↗</span>
 				</a>
 			)}
 			<a class="inline-flex items-center gap-2 text-sm" href={`/${locale}/projects/`}>
-				← {t('projects.back')}
+				← {translator('projects.back')}
 			</a>
 		</div>
 	</Section>
 ) : (
-	<p class="text-[color:var(--color-muted)]">{t('errors.notFound')}</p>
+	<p class="text-[color:var(--color-muted)]">{translator('errors.notFound')}</p>
 )}

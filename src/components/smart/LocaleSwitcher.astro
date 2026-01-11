@@ -3,13 +3,13 @@ import { appConfig } from '../../config';
 import { createTranslator, supportedLocales, type Locale } from '../../i18n';
 
 const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 const [, , ...rest] = Astro.url.pathname.split('/');
 const restPath = rest.join('/');
 ---
 
 <div class="flex items-center gap-2 text-sm">
-	<span class="text-[color:var(--color-muted)]">{t('locale.label')}:</span>
+	<span class="text-[color:var(--color-muted)]">{translator('locale.label')}:</span>
 	<div class="flex gap-1">
 		{supportedLocales.map((code) => (
 			<a

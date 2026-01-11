@@ -5,14 +5,14 @@ import { appConfig } from '../../../config';
 import { createTranslator, type Locale } from '../../../i18n';
 
 const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
-const { slug } = Astro.params;
+const slug = Astro.params.slug ?? '';
 Astro.locals.locale = locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 ---
 
 <BaseLayout
-	title={`${t('seo.projectTitle')}: ${slug}`}
-	description={t('projects.title')}
+	title={`${translator('seo.projectTitle')}: ${slug}`}
+	description={translator('projects.title')}
 	urlPathname={`/${locale}/projects/${slug}/`}
 >
 	<ProjectDetail slug={slug} />

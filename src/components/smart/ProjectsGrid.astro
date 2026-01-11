@@ -5,23 +5,23 @@ import Card from '../ui/Card.astro';
 import Section from '../ui/Section.astro';
 
 const locale = (Astro.locals.locale ?? 'en') as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 const projects = getProjects(locale);
 ---
 
-<Section title={t('projects.title')}>
+<Section title={translator('projects.title')}>
 	{projects.length === 0 ? (
-		<p class="text-[color:var(--color-muted)]">{t('projects.empty')}</p>
+		<p class="text-[color:var(--color-muted)]">{translator('projects.empty')}</p>
 	) : (
 		<div class="grid md:grid-cols-2">
 			{projects.map((project) => (
 				<Card
 					title={project.translation?.name ?? project.slug}
 					description={project.translation?.description}
-					eyebrow={project.status === 'published' ? t('admin.published') : t('admin.draft')}
-					tags={project.tech?.split(',').map((t) => t.trim()) ?? []}
+					eyebrow={project.status === 'published' ? translator('admin.published') : translator('admin.draft')}
+					tags={project.tech?.split(',').map((tech) => tech.trim()) ?? []}
 					href={`/${locale}/projects/${project.slug}/`}
-					linkLabel={t('projects.view')}
+					linkLabel={translator('projects.view')}
 				/>
 			))}
 		</div>

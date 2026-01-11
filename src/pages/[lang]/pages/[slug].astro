@@ -5,11 +5,11 @@ import { appConfig } from '../../../config';
 import { createTranslator, type Locale } from '../../../i18n';
 
 const locale = (Astro.params.lang ?? appConfig.locales.defaultLocale) as Locale;
-const { slug } = Astro.params;
+const slug = Astro.params.slug ?? '';
 Astro.locals.locale = locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 ---
 
-<BaseLayout title={`${t('seo.genericTitle')}: ${slug}`} description={t('pages.sections')} urlPathname={`/${locale}/pages/${slug}/`}>
+<BaseLayout title={`${translator('seo.genericTitle')}: ${slug}`} description={translator('pages.sections')} urlPathname={`/${locale}/pages/${slug}/`}>
 	<GenericPageSections slug={slug} />
 </BaseLayout>

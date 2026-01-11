@@ -15,15 +15,17 @@ export interface Props {
 
 const { title, description, urlPathname } = Astro.props;
 const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
-const t = createTranslator(locale);
-const theme = (Astro.locals.theme === 'dark' ? 'dark' : 'light') as 'light' | 'dark';
+const translator = createTranslator(locale);
+const theme = (Astro.locals.theme === 'dark'
+	? 'dark'
+	: 'light') as 'light' | 'dark';
 
 const navItems = [
-	{ label: t('nav.home'), href: `/${locale}/`, active: Astro.url.pathname === `/${locale}/` },
-	{ label: t('nav.projects'), href: `/${locale}/projects/`, active: Astro.url.pathname.startsWith(`/${locale}/projects`) },
-	{ label: t('nav.pages'), href: `/${locale}/pages/`, active: Astro.url.pathname.startsWith(`/${locale}/pages`) },
-	{ label: t('nav.about'), href: `/${locale}/about/`, active: Astro.url.pathname.startsWith(`/${locale}/about`) },
-	{ label: t('nav.contact'), href: `/${locale}/contact/`, active: Astro.url.pathname.startsWith(`/${locale}/contact`) }
+	{ label: translator('nav.home'), href: `/${locale}/`, active: Astro.url.pathname === `/${locale}/` },
+	{ label: translator('nav.projects'), href: `/${locale}/projects/`, active: Astro.url.pathname.startsWith(`/${locale}/projects`) },
+	{ label: translator('nav.pages'), href: `/${locale}/pages/`, active: Astro.url.pathname.startsWith(`/${locale}/pages`) },
+	{ label: translator('nav.about'), href: `/${locale}/about/`, active: Astro.url.pathname.startsWith(`/${locale}/about`) },
+	{ label: translator('nav.contact'), href: `/${locale}/contact/`, active: Astro.url.pathname.startsWith(`/${locale}/contact`) }
 ];
 
 const themeVars = (mode: 'light' | 'dark') => `
@@ -68,6 +70,6 @@ const themeCss = `
 		<main>
 			<slot />
 		</main>
-		<Footer text={t('footer.tagline')} />
+		<Footer text={translator('footer.tagline')} />
 	</body>
 </html>

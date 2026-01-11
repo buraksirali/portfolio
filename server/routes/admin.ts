@@ -14,16 +14,16 @@ import type { RouteDependencies } from './types';
 
 const withTranslator = (
 	req: express.Request<EmptyParams, string, Record<string, never>, LocaleQuery, EmptyLocals>
-): { t: ReturnType<typeof createTranslator>; locale: Locale } => {
+): { translator: ReturnType<typeof createTranslator>; locale: Locale } => {
 	const requestedLocale = typeof req.query.locale === 'string' ? req.query.locale : null;
 	const locale = requestedLocale && supportedLocales.includes(requestedLocale as Locale) ? (requestedLocale as Locale) : defaultLocale;
-	return { t: createTranslator(locale), locale };
+	return { translator: createTranslator(locale), locale };
 };
 
 const buildAdminLayout = (
 	title: string,
 	body: string,
-	t: ReturnType<typeof createTranslator>,
+	translator: ReturnType<typeof createTranslator>,
 	csrf?: string
 ): string => `
 <!doctype html>
@@ -45,14 +45,14 @@ const buildAdminLayout = (
 </head>
 <body>
   <header style="display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #eee;">
-    <div style="font-weight:700;">${appConfig.branding.siteName} – ${t('admin.title')}</div>
+    <div style="font-weight:700;">${appConfig.branding.siteName} – ${translator('admin.title')}</div>
     <nav style="display:flex;gap:1rem;">
-      <a href="/admin/projects">${t('admin.projects')}</a>
-      <a href="/admin/pages">${t('admin.pages')}</a>
-      <a href="/admin/translations">${t('admin.translations')}</a>
+      <a href="/admin/projects">${translator('admin.projects')}</a>
+      <a href="/admin/pages">${translator('admin.pages')}</a>
+      <a href="/admin/translations">${translator('admin.translations')}</a>
       <form method="post" action="/auth/logout">
         ${csrf ? `<input type="hidden" name="_csrf" value="${csrf}">` : ''}
-        <button type="submit" style="background:none;border:1px solid #ddd;padding:0.35rem 0.75rem;color:#c2410c;">${t('admin.logout')}</button>
+        <button type="submit" style="background:none;border:1px solid #ddd;padding:0.35rem 0.75rem;color:#c2410c;">${translator('admin.logout')}</button>
       </form>
     </nav>
   </header>
@@ -64,7 +64,7 @@ const buildAdminLayout = (
 // Admin routes (projects/pages/translations) and auth guard.
 export const registerAdminRoutes = (app: express.Express, deps: RouteDependencies) => {
 	const adminRootHandler: express.RequestHandler<EmptyParams, string, Record<string, never>, LocaleQuery, EmptyLocals> = (
-		req,
+		_,
 		res
 	): void => {
 		res.redirect('/admin/projects');
@@ -76,12 +76,12 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 		req,
 		res
 	): void => {
-		const { t, locale } = withTranslator(req);
+		const { translator, locale } = withTranslator(req);
 		const projects = getProjects(locale);
 		const csrfToken = deps.generateCsrfToken(req, res);
 		const form = `
-    <h1>${t('admin.projects')}</h1>
-    <p>${t('admin.status')}</p>
+    <h1>${translator('admin.projects')}</h1>
+    <p>${translator('admin.status')}</p>
     <section style="display:grid;gap:1rem;">
       ${projects
 				.map(
@@ -95,32 +95,32 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 				)
 				.join('')}
     </section>
-    <h2 style="margin-top:2rem;">${t('admin.save')} ${t('admin.projects')}</h2>
+    <h2 style="margin-top:2rem;">${translator('admin.save')} ${translator('admin.projects')}</h2>
     <form method="post" action="/admin/projects" style="display:grid;gap:1rem;">
       <input type="hidden" name="_csrf" value="${csrfToken}">
-      <label>${t('admin.slug')} <input name="slug" required /></label>
-      <label>${t('admin.status')}
+      <label>${translator('admin.slug')} <input name="slug" required /></label>
+      <label>${translator('admin.status')}
         <select name="status">
-          <option value="published">${t('admin.published')}</option>
-          <option value="draft">${t('admin.draft')}</option>
+          <option value="published">${translator('admin.published')}</option>
+          <option value="draft">${translator('admin.draft')}</option>
         </select>
       </label>
-      <label>${t('projects.tech')} <input name="tech" /></label>
-      <label>${t('projects.link')} <input name="link" /></label>
+      <label>${translator('projects.tech')} <input name="tech" /></label>
+      <label>${translator('projects.link')} <input name="link" /></label>
       ${appConfig.locales.supported
 				.map(
 					(loc) => `<fieldset style="border:1px solid #eee;padding:1rem;">
-          <legend>${t('admin.locale')}: ${loc.toUpperCase()}</legend>
-          <label>${t('admin.name')} <input name="name_${loc}" /></label>
-          <label>${t('admin.description')} <textarea name="description_${loc}"></textarea></label>
-          <label>${t('admin.heroTitle')} <input name="hero_${loc}" /></label>
+          <legend>${translator('admin.locale')}: ${loc.toUpperCase()}</legend>
+          <label>${translator('admin.name')} <input name="name_${loc}" /></label>
+          <label>${translator('admin.description')} <textarea name="description_${loc}"></textarea></label>
+          <label>${translator('admin.heroTitle')} <input name="hero_${loc}" /></label>
         </fieldset>`
 				)
 				.join('')}
-      <button type="submit">${t('admin.save')}</button>
+      <button type="submit">${translator('admin.save')}</button>
     </form>
   `;
-		res.send(buildAdminLayout(t('admin.projects'), form, t, csrfToken));
+		res.send(buildAdminLayout(translator('admin.projects'), form, translator, csrfToken));
 	};
 
 	app.get('/admin/projects', deps.requireAuth, adminProjectsHandler);
@@ -146,7 +146,9 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 		const payload: Project = {
 			id: projectId,
 			slug: req.body.slug,
-			status: req.body.status === 'published' ? 'published' : 'draft',
+			status: req.body.status === 'published'
+				? 'published'
+				: 'draft',
 			tech: req.body.tech,
 			link: req.body.link
 		};
@@ -163,43 +165,43 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 		req,
 		res
 	): void => {
-		const { t, locale } = withTranslator(req);
+		const { translator, locale } = withTranslator(req);
 		const csrfToken = deps.generateCsrfToken(req, res);
 		const pages = getPages(locale);
 		const body = `
-    <h1>${t('admin.pages')}</h1>
+    <h1>${translator('admin.pages')}</h1>
     <section style="display:grid;gap:1rem;">
       ${pages
 				.map(
 					(p) => `<article style="border:1px solid #eee;padding:1rem;border-radius:12px;">
-          <strong>${p.slug}</strong> – ${p.published ? t('admin.published') : t('admin.draft')}
+          <strong>${p.slug}</strong> – ${p.published ? translator('admin.published') : translator('admin.draft')}
         </article>`
 				)
 				.join('')}
     </section>
-    <h2 style="margin-top:2rem;">${t('admin.save')} ${t('admin.pages')}</h2>
+    <h2 style="margin-top:2rem;">${translator('admin.save')} ${translator('admin.pages')}</h2>
     <form method="post" action="/admin/pages" style="display:grid;gap:1rem;">
       <input type="hidden" name="_csrf" value="${csrfToken}">
-      <label>${t('admin.slug')} <input name="slug" required /></label>
-      <label>${t('admin.status')}
+      <label>${translator('admin.slug')} <input name="slug" required /></label>
+      <label>${translator('admin.status')}
         <select name="published">
-          <option value="1">${t('admin.published')}</option>
-          <option value="0">${t('admin.draft')}</option>
+          <option value="1">${translator('admin.published')}</option>
+          <option value="0">${translator('admin.draft')}</option>
         </select>
       </label>
       ${appConfig.locales.supported
 				.map(
 					(loc) => `<fieldset style="border:1px solid #eee;padding:1rem;">
-          <legend>${t('admin.locale')}: ${loc.toUpperCase()}</legend>
-          <label>${t('admin.name')} <input name="heading_${loc}" /></label>
-          <label>${t('admin.description')} <textarea name="body_${loc}"></textarea></label>
+          <legend>${translator('admin.locale')}: ${loc.toUpperCase()}</legend>
+          <label>${translator('admin.name')} <input name="heading_${loc}" /></label>
+          <label>${translator('admin.description')} <textarea name="body_${loc}"></textarea></label>
         </fieldset>`
 				)
 				.join('')}
-      <button type="submit">${t('admin.save')}</button>
+      <button type="submit">${translator('admin.save')}</button>
     </form>
   `;
-		res.send(buildAdminLayout(t('admin.pages'), body, t, csrfToken));
+		res.send(buildAdminLayout(translator('admin.pages'), body, translator, csrfToken));
 	};
 
 	app.get('/admin/pages', deps.requireAuth, adminPagesHandler);
@@ -226,18 +228,18 @@ export const registerAdminRoutes = (app: express.Express, deps: RouteDependencie
 		req,
 		res
 	): void => {
-		const { t } = withTranslator(req);
+		const { translator } = withTranslator(req);
 		const csrfToken = deps.generateCsrfToken(req, res);
 		const body = `
-    <h1>${t('admin.translations')}</h1>
-    <p>${t('admin.locale')} ${appConfig.locales.supported.join(', ')}</p>
-    <p>${t('admin.translationInfo')}</p>
+    <h1>${translator('admin.translations')}</h1>
+    <p>${translator('admin.locale')} ${appConfig.locales.supported.join(', ')}</p>
+    <p>${translator('admin.translationInfo')}</p>
     <form method="post" action="/auth/logout">
       <input type="hidden" name="_csrf" value="${csrfToken}">
-      <button type="submit">${t('admin.logout')}</button>
+      <button type="submit">${translator('admin.logout')}</button>
     </form>
 	`;
-		res.send(buildAdminLayout(t('admin.translations'), body, t, csrfToken));
+		res.send(buildAdminLayout(translator('admin.translations'), body, translator, csrfToken));
 	};
 
 	app.get('/admin/translations', deps.requireAuth, adminTranslationsHandler);

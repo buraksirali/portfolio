@@ -9,13 +9,13 @@ export interface Props {
 
 const { slug } = Astro.props;
 const locale = (Astro.locals.locale ?? 'en') as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 const pages = getPages(locale);
 const page = pages.find((p) => p.slug === slug && p.published);
 ---
 
 {page ? (
-	<Section title={t('pages.title')} description={t('pages.sections')}>
+	<Section title={translator('pages.title')} description={translator('pages.sections')}>
 		<div class="space-y-6">
 			{page.sections.map((section) => (
 				<article class="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-6 shadow-card">
@@ -26,5 +26,5 @@ const page = pages.find((p) => p.slug === slug && p.published);
 		</div>
 	</Section>
 ) : (
-	<p class="text-[color:var(--color-muted)]">{t('errors.notFound')}</p>
+	<p class="text-[color:var(--color-muted)]">{translator('errors.notFound')}</p>
 )}

@@ -4,15 +4,15 @@ import { createTranslator, type Locale } from '../../i18n';
 import Hero from '../ui/Hero.astro';
 
 const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 ---
 
 <Hero
-	title={t('hero.title')}
-	subtitle={t('hero.subtitle')}
-	eyebrow={t('hero.eyebrow')}
+	title={translator('hero.title')}
+	subtitle={translator('hero.subtitle')}
+	eyebrow={translator('hero.eyebrow')}
 	actions={[
-		{ label: t('hero.ctaPrimary'), href: `/${locale}/projects/`, variant: 'primary' },
-		{ label: t('hero.ctaSecondary'), href: `/${locale}/contact/`, variant: 'ghost' }
+		{ label: translator('hero.ctaPrimary'), href: `/${locale}/projects/`, variant: 'primary' },
+		{ label: translator('hero.ctaSecondary'), href: `/${locale}/contact/`, variant: 'ghost' }
 	]}
 />

@@ -4,10 +4,10 @@ import { createTranslator, type Locale } from '../../i18n';
 import Section from '../ui/Section.astro';
 
 const locale = (Astro.locals.locale ?? appConfig.locales.defaultLocale) as Locale;
-const t = createTranslator(locale);
+const translator = createTranslator(locale);
 ---
 
-<Section title={t('about.title')} description={t('about.body')}>
+<Section title={translator('about.title')} description={translator('about.body')}>
 	<div class="bg-[color:var(--color-surface)] border border-[color:var(--color-border)] rounded-2xl p-6 shadow-card">
 		<p class="text-[color:var(--color-muted)]">{appConfig.branding.tagline}</p>
 	</div>
