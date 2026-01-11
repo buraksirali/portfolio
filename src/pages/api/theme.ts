@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import cookie from 'cookie';
 
-export const post: APIRoute = async ({ request, url, redirect }) => {
+export const POST: APIRoute = async ({ request, url }) => {
 	const data = await request.formData();
 	const theme = data.get('theme') === 'dark' ? 'dark' : 'light';
 	const referer = request.headers.get('referer');
