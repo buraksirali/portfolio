@@ -14,6 +14,7 @@ Astro + Express, SSR-first portfolio platform with theming, i18n, and an OAuth-p
 ## Configuration
 - Central config: `src/config/app-config.ts` (branding, SEO defaults, theme tokens, OAuth endpoints, locales, DB URL).
 - Env validation: `src/config/env.ts` (SESSION_SECRET, SESSION_MAX_AGE_DAYS, OAUTH_* values, DATABASE_URL, SITE_URL, PORT).
+- Env file: copy `.env.example` to `portfolio.env`; the config loader reads `portfolio.env` if present.
 - Theme: CSS variables + Tailwind powered by the orange palette in `src/config/theme.ts`. Runtime variables are injected in `BaseLayout`.
 - Translations: JSON files under `src/i18n/locales`. Add/remove languages by duplicating a locale file and registering the code in `app-config.ts`.
 
@@ -35,7 +36,7 @@ Astro + Express, SSR-first portfolio platform with theming, i18n, and an OAuth-p
 - CSRF protection on all POST routes via `csrf-csrf`.
 
 ## Deployment
-1) Set env vars (`SESSION_SECRET`, `SESSION_MAX_AGE_DAYS`, `OAUTH_ISSUER`, `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `OAUTH_REDIRECT_URI`, `SITE_URL`, `DATABASE_URL`, `PORT`).
+1) Set env vars in `portfolio.env` (`SESSION_SECRET`, `SESSION_MAX_AGE_DAYS`, `OAUTH_ISSUER`, `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `OAUTH_REDIRECT_URI`, `SITE_URL`, `DATABASE_URL`, `PORT`). For Keycloak, `OAUTH_ISSUER` should be `https://auth.buraksirali.com`.
 2) `bun install && bun run build`.
 3) Serve with `node server/app.ts` (or compile to JS first) so Express wraps the Astro SSR handler from `dist/server/entry.mjs`.
 

@@ -1,4 +1,35 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { z } from 'zod';
+
+const loadPortfolioEnv = (): void => {
+	const envPath = path.resolve(process.cwd(), 'portfolio.env');
+	if (!fs.existsSync(envPath)) {
+		return;
+	}
+	const contents = fs.readFileSync(envPath, 'utf8');
+	for (const line of contents.split(/\r?\n/)) {
+		const trimmed = line.trim();
+		if (trimmed === '' || trimmed.startsWith('#')) {
+			continue;
+		}
+		const separatorIndex = trimmed.indexOf('=');
+		if (separatorIndex === -1) {
+			continue;
+		}
+		const key = trimmed.slice(0, separatorIndex).trim();
+		let value = trimmed.slice(separatorIndex + 1).trim();
+		if (
+			(value.startsWith('"') && value.endsWith('"')) ||
+			(value.startsWith("'") && value.endsWith("'"))
+		) {
+			value = value.slice(1, -1);
+		}
+		process.env[key] ??= value;
+	}
+};
+
+loadPortfolioEnv();
 
 const envSchema = z.object({
 	NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
